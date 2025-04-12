@@ -3,10 +3,8 @@ FROM python:3.11-slim-buster
 WORKDIR /app
 
 COPY pyproject.toml poetry.lock ./
-RUN pip install --upgrade pip && pip install poetry
-RUN poetry config virtualenvs.in-project true && poetry install --no-root
+RUN pip install --no-cache-dir poetry && poetry install --no-root
 
-COPY app ./               
-COPY .env .
+COPY app ./app
 
-CMD ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0"] # --reload は削除
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
